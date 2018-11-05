@@ -8,5 +8,6 @@ list_png <- dir_ls(path = here::here("gather", "gather-gif"),
 list_png %>% 
   map(image_read) %>% # reads each path file
   image_join() %>% # joins image
+  image_scale("800") %>% 
   image_animate(fps = .5) %>% # animates, can opt for number of loops
   image_write(here::here("gather", "gather.gif")) # write the gif to file
