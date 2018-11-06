@@ -254,7 +254,7 @@ babynames %>%
 --
 
 .pull-right[
-.onfire[Good]
+.whisper[Good]
 ```{r eval = FALSE}
 # both of these will work
 t.test(prop ~ sex, data = babynames)
@@ -308,7 +308,7 @@ males_row1 <- babynames %>%
 --
 
 .pull-left[
-.onfire[Good]
+.whisper[Good]
 ```{r}
 babynames %>% 
   filter(sex == "M") %>% 
