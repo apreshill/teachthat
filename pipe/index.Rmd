@@ -91,8 +91,7 @@ Here, the "sentence" starts with a .shout[verb].
 .whisper[Piping] a dataframe into a function lets you read .whisper[L to R, top-to-bottom].
 
 ```{r}
-babynames %>% 
-  slice(1)
+babynames %>% slice(1)
 ```
 
 <hr>
@@ -136,44 +135,88 @@ babynames %>%
 ---
 ## Think .whisper["and then"]
 
+You can build up a series of pipes
+
 ```{r results='hide'}
 babynames %>% # dataframe first and then... #<<
   filter(sex == "M") %>% 
+  arrange(desc(year)) %>% 
   slice(1)
 ```
 
 ---
 ## Think .whisper["and then"]
 
+You can build up a series of pipes
+
 ```{r results='hide'}
 babynames %>% # dataframe first and then... #<<
-  filter(sex == "M") %>% # filter and then...#<<
+  filter(sex == "M") %>% # filter only males and then...#<<
+  arrange(desc(year)) %>% 
   slice(1) 
 ```
 
 ---
 ## Think .whisper["and then"]
 
+You can build up a series of pipes
+
+```{r results='hide'}
+babynames %>% # dataframe first and then... #<<
+  filter(sex == "M") %>% # filter only males and then...#<<
+  arrange(desc(year)) %>% # arrange by year and then...#<<
+  slice(1) 
+```
+
+
+---
+## Think .whisper["and then"]
+
+You can build up a series of pipes
+
 ```{r}
 babynames %>% # dataframe first and then... #<<
-  filter(sex == "M") %>% # filter and then...#<<
+  filter(sex == "M") %>% # filter only males and then...#<<
+  arrange(desc(year)) %>% # arrange by year and then...#<<
   slice(1) # slice the first row! #<<
 ```
 
 ---
 ## Use assignment
 
-Using the `<-` assigns this new object a name, like `males_row1`.
+Using the `<-` assigns this new object a name. We ony have to do this _once_ with the `%>%`!
 
+--
+
+.pull-left[
+.shout[Bad]
 ```{r}
-males_row1 <- #<<
+boys <- filter(babynames, 
+               sex == "M")
+boys_desc <- arrange(boys,
+                     desc(year))
+boy_latest <- slice(boys_desc, 
+                    1) 
+
+boy_latest 
+```
+]
+
+--
+
+
+.pull-right[
+.whisper[Good]
+```{r}
+boy_latest <- #<<
   babynames %>% 
   filter(sex == "M") %>%
+  arrange(desc(year)) %>%
   slice(1) 
 
-males_row1
+boy_latest #<<
 ```
-
+]
 
 ---
 class: inverse, middle, center
@@ -191,6 +234,7 @@ class: middle
 ```{r}
 babynames %>% 
   filter(sex == "M") %>% #<<
+  arrange(desc(year)) %>% #<<
   slice(1) #<<
 ```
 
@@ -205,6 +249,7 @@ This does the same thing:
 ```{r}
 babynames %>% 
   filter(.data = ., sex == "M") %>%  #<<
+  arrange(.data = ., desc(year)) %>% #<<
   slice(.data = ., 1) #<<
 ```
 
@@ -219,6 +264,7 @@ So does this:
 ```{r}
 babynames %>% 
   filter(., sex == "M") %>%  #<<
+  arrange(., desc(year)) %>% #<<
   slice(., 1) #<<
 ```
 
@@ -232,7 +278,7 @@ class: inverse, middle, center
 ## Why do I need to know about the dot (`.`)?
 
 ---
-## Answer
+## Why care about `.`?
 
 For many non-`tidyverse` functions (and some `tidyverse` ones too), the dataframe is not _actually_ the first argument `r emo::ji("sad")`.
 
@@ -242,11 +288,14 @@ For many non-`tidyverse` functions (and some `tidyverse` ones too), the datafram
 .pull-left[
 .shout[Bad]
 ```{r eval = FALSE}
-# neither of these will work
+# none of these will work
 t.test(babynames, prop ~ sex)
-```
-```{r eval = FALSE}
+
 babynames %>% 
+  t.test(prop ~ sex)
+
+babynames %>% 
+  filter(year >= 2000) %>% 
   t.test(prop ~ sex)
 ```
 ]
@@ -256,11 +305,14 @@ babynames %>%
 .pull-right[
 .whisper[Good]
 ```{r eval = FALSE}
-# both of these will work
+# these will all work
 t.test(prop ~ sex, data = babynames)
-```
-```{r}
+
 babynames %>% 
+  t.test(prop ~ sex, data = .)
+
+babynames %>% 
+  filter(year >= 2000) %>% 
   t.test(prop ~ sex, data = .)
 ```
 ]
@@ -276,49 +328,50 @@ class:middle, inverse, center
 
 From [The tidyverse style guide](https://style.tidyverse.org/pipes.html), the `%>%` should:
 
-- Always have a space before it.
+--
+
+- Have a space before, and a new line after.
 
 --
 
-- Usually be followed by a new line. 
+- Be indented by two spaces after the first line where you name the dataframe. 
 
 --
 
-- Be indented by two spaces after the first step where you name the dataframe. 
-
---
-
-- Includes the `()` for each function (even if you don't use arguments!)
+- Include the `()` after each function name (even if you don't use arguments!)
 
 --
 
 .pull-left[
 .shout[Bad]
-```{r}
+```{r eval = FALSE}
 babynames %>% 
 filter(sex == "M") %>% slice(1)
 
 # with assignment
-males_row1 <- babynames %>% 
+(boy_latest <- babynames %>% 
   filter(sex == "M") %>% 
-  slice(1)
+  arrange(desc(year)) %>% 
+  slice(1))
 ```
 ]
 
 --
 
-.pull-left[
+.pull-right[
 .whisper[Good]
-```{r}
+```{r eval = FALSE}
 babynames %>% 
   filter(sex == "M") %>% 
+  arrange(desc(year)) %>% 
   slice(1)
 
 # with assignment
-males_row1 <- 
+(boy_latest <- 
   babynames %>% 
   filter(sex == "M") %>% 
-  slice(1)
+  arrange(desc(year)) %>% 
+  slice(1))
 ```
 ]
 

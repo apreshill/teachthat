@@ -97,8 +97,7 @@ Here, the "sentence" starts with a .shout[verb].
 
 
 ```r
-babynames %&gt;% 
-  slice(1)
+babynames %&gt;% slice(1)
 ```
 
 ```
@@ -165,62 +164,115 @@ babynames %&gt;%
 ---
 ## Think .whisper["and then"]
 
+You can build up a series of pipes
+
 
 ```r
 *babynames %&gt;% # dataframe first and then...
   filter(sex == "M") %&gt;% 
+  arrange(desc(year)) %&gt;% 
   slice(1)
 ```
 
 ---
 ## Think .whisper["and then"]
 
+You can build up a series of pipes
+
 
 ```r
 *babynames %&gt;% # dataframe first and then...
-* filter(sex == "M") %&gt;% # filter and then...
+* filter(sex == "M") %&gt;% # filter only males and then...
+  arrange(desc(year)) %&gt;% 
   slice(1) 
 ```
 
 ---
 ## Think .whisper["and then"]
 
+You can build up a series of pipes
+
 
 ```r
 *babynames %&gt;% # dataframe first and then...
-* filter(sex == "M") %&gt;% # filter and then...
+* filter(sex == "M") %&gt;% # filter only males and then...
+* arrange(desc(year)) %&gt;% # arrange by year and then...
+  slice(1) 
+```
+
+
+---
+## Think .whisper["and then"]
+
+You can build up a series of pipes
+
+
+```r
+*babynames %&gt;% # dataframe first and then...
+* filter(sex == "M") %&gt;% # filter only males and then...
+* arrange(desc(year)) %&gt;% # arrange by year and then...
 * slice(1) # slice the first row!
 ```
 
 ```
 # A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
+   year sex   name      n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;
+1  2015 M     Noah  19511 0.00963
 ```
 
 ---
 ## Use assignment
 
-Using the `&lt;-` assigns this new object a name, like `males_row1`.
+Using the `&lt;-` assigns this new object a name. We ony have to do this _once_ with the `%&gt;%`!
 
+--
+
+.pull-left[
+.shout[Bad]
 
 ```r
-*males_row1 &lt;-
-  babynames %&gt;% 
-  filter(sex == "M") %&gt;%
-  slice(1) 
+boys &lt;- filter(babynames, 
+               sex == "M")
+boys_desc &lt;- arrange(boys,
+                     desc(year))
+boy_latest &lt;- slice(boys_desc, 
+                    1) 
 
-males_row1
+boy_latest 
 ```
 
 ```
 # A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
+   year sex   name      n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;
+1  2015 M     Noah  19511 0.00963
+```
+]
+
+--
+
+
+.pull-right[
+.whisper[Good]
+
+```r
+*boy_latest &lt;-
+  babynames %&gt;% 
+  filter(sex == "M") %&gt;%
+  arrange(desc(year)) %&gt;%
+  slice(1) 
+
+*boy_latest
 ```
 
+```
+# A tibble: 1 x 5
+   year sex   name      n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;
+1  2015 M     Noah  19511 0.00963
+```
+]
 
 ---
 class: inverse, middle, center
@@ -237,14 +289,15 @@ class: middle
 ```r
 babynames %&gt;% 
 * filter(sex == "M") %&gt;%
+* arrange(desc(year)) %&gt;%
 * slice(1)
 ```
 
 ```
 # A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
+   year sex   name      n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;
+1  2015 M     Noah  19511 0.00963
 ```
 
 &lt;hr&gt;
@@ -259,14 +312,15 @@ This does the same thing:
 ```r
 babynames %&gt;% 
 * filter(.data = ., sex == "M") %&gt;%
+* arrange(.data = ., desc(year)) %&gt;%
 * slice(.data = ., 1)
 ```
 
 ```
 # A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
+   year sex   name      n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;
+1  2015 M     Noah  19511 0.00963
 ```
 
 ]
@@ -281,14 +335,15 @@ So does this:
 ```r
 babynames %&gt;% 
 * filter(., sex == "M") %&gt;%
+* arrange(., desc(year)) %&gt;%
 * slice(., 1)
 ```
 
 ```
 # A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
+   year sex   name      n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;
+1  2015 M     Noah  19511 0.00963
 ```
 
 ]
@@ -301,7 +356,7 @@ class: inverse, middle, center
 ## Why do I need to know about the dot (`.`)?
 
 ---
-## Answer
+## Why care about `.`?
 
 For many non-`tidyverse` functions (and some `tidyverse` ones too), the dataframe is not _actually_ the first argument 😭.
 
@@ -312,12 +367,14 @@ For many non-`tidyverse` functions (and some `tidyverse` ones too), the datafram
 .shout[Bad]
 
 ```r
-# neither of these will work
+# none of these will work
 t.test(babynames, prop ~ sex)
-```
 
-```r
 babynames %&gt;% 
+  t.test(prop ~ sex)
+
+babynames %&gt;% 
+  filter(year &gt;= 2000) %&gt;% 
   t.test(prop ~ sex)
 ```
 ]
@@ -328,27 +385,15 @@ babynames %&gt;%
 .whisper[Good]
 
 ```r
-# both of these will work
+# these will all work
 t.test(prop ~ sex, data = babynames)
-```
 
-```r
 babynames %&gt;% 
   t.test(prop ~ sex, data = .)
-```
 
-```
-
-	Welch Two Sample t-test
-
-data:  prop by sex
-t = -28.871, df = 1157500, p-value &lt; 2.2e-16
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -5.843749e-05 -5.100754e-05
-sample estimates:
-mean in group F mean in group M 
-   0.0001168327    0.0001715552 
+babynames %&gt;% 
+  filter(year &gt;= 2000) %&gt;% 
+  t.test(prop ~ sex, data = .)
 ```
 ]
 
@@ -363,19 +408,17 @@ class:middle, inverse, center
 
 From [The tidyverse style guide](https://style.tidyverse.org/pipes.html), the `%&gt;%` should:
 
-- Always have a space before it.
+--
+
+- Have a space before, and a new line after.
 
 --
 
-- Usually be followed by a new line. 
+- Be indented by two spaces after the first line where you name the dataframe. 
 
 --
 
-- Be indented by two spaces after the first step where you name the dataframe. 
-
---
-
-- Includes the `()` for each function (even if you don't use arguments!)
+- Include the `()` after each function name (even if you don't use arguments!)
 
 --
 
@@ -385,47 +428,32 @@ From [The tidyverse style guide](https://style.tidyverse.org/pipes.html), the `%
 ```r
 babynames %&gt;% 
 filter(sex == "M") %&gt;% slice(1)
-```
 
-```
-# A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
-```
-
-```r
 # with assignment
-males_row1 &lt;- babynames %&gt;% 
+(boy_latest &lt;- babynames %&gt;% 
   filter(sex == "M") %&gt;% 
-  slice(1)
+  arrange(desc(year)) %&gt;% 
+  slice(1))
 ```
 ]
 
 --
 
-.pull-left[
+.pull-right[
 .whisper[Good]
 
 ```r
 babynames %&gt;% 
   filter(sex == "M") %&gt;% 
+  arrange(desc(year)) %&gt;% 
   slice(1)
-```
 
-```
-# A tibble: 1 x 5
-   year sex   name      n   prop
-  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
-1  1880 M     John   9655 0.0815
-```
-
-```r
 # with assignment
-males_row1 &lt;- 
+(boy_latest &lt;- 
   babynames %&gt;% 
   filter(sex == "M") %&gt;% 
-  slice(1)
+  arrange(desc(year)) %&gt;% 
+  slice(1))
 ```
 ]
     </textarea>
