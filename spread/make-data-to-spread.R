@@ -6,7 +6,7 @@ library(tidyverse)
 
 # we start tidy
 juniors_about <- tribble(
-  ~ "baker", ~"age", ~"outcome", ~"correct",
+  ~ "baker", ~"age", ~"outcome", ~"spices",
   "Emma", 11L, "finalist", 2L, 
   "Harry", 10L, "winner", 3L, 
   "Ruby", 11L, "finalist", 2L, 

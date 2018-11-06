@@ -1,27 +1,27 @@
 make-data-to-spread.R
 ================
 alison
-Mon Nov 5 19:18:44 2018
+Tue Nov 6 11:39:20 2018
 
 ``` r
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ─────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
     ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
     ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
     ## ✔ readr   1.1.1     ✔ forcats 0.3.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
 ``` r
 # we start tidy
 juniors_about <- tribble(
-  ~ "baker", ~"age", ~"outcome", ~"correct",
+  ~ "baker", ~"age", ~"outcome", ~"spices",
   "Emma", 11L, "finalist", 2L, 
   "Harry", 10L, "winner", 3L, 
   "Ruby", 11L, "finalist", 2L, 
@@ -31,12 +31,12 @@ juniors_about
 ```
 
     ## # A tibble: 4 x 4
-    ##   baker    age outcome  correct
-    ##   <chr>  <int> <chr>      <int>
-    ## 1 Emma      11 finalist       2
-    ## 2 Harry     10 winner         3
-    ## 3 Ruby      11 finalist       2
-    ## 4 Zainab    10 finalist       0
+    ##   baker    age outcome  spices
+    ##   <chr>  <int> <chr>     <int>
+    ## 1 Emma      11 finalist      2
+    ## 2 Harry     10 winner        3
+    ## 3 Ruby      11 finalist      2
+    ## 4 Zainab    10 finalist      0
 
 ``` r
 # we spread to jumble (i.e., make untidy in specific way)
@@ -55,10 +55,10 @@ juniors_about
     ##  6 Harry  outcome  winner   
     ##  7 Ruby   outcome  finalist 
     ##  8 Zainab outcome  finalist 
-    ##  9 Emma   correct  2        
-    ## 10 Harry  correct  3        
-    ## 11 Ruby   correct  2        
-    ## 12 Zainab correct  0
+    ##  9 Emma   spices   2        
+    ## 10 Harry  spices   3        
+    ## 11 Ruby   spices   2        
+    ## 12 Zainab spices   0
 
 ``` r
 # spread to tidy- but all character variables!
@@ -67,12 +67,12 @@ juniors_jumbled %>%
 ```
 
     ## # A tibble: 4 x 4
-    ##   baker  age   correct outcome 
-    ##   <chr>  <chr> <chr>   <chr>   
-    ## 1 Emma   11    2       finalist
-    ## 2 Harry  10    3       winner  
-    ## 3 Ruby   11    2       finalist
-    ## 4 Zainab 10    0       finalist
+    ##   baker  age   outcome  spices
+    ##   <chr>  <chr> <chr>    <chr> 
+    ## 1 Emma   11    finalist 2     
+    ## 2 Harry  10    winner   3     
+    ## 3 Ruby   11    finalist 2     
+    ## 4 Zainab 10    finalist 0
 
 ``` r
 # spread to tidy + cast column types too- huzzah!
@@ -81,9 +81,9 @@ juniors_jumbled %>%
 ```
 
     ## # A tibble: 4 x 4
-    ##   baker    age correct outcome 
-    ##   <chr>  <int>   <int> <chr>   
-    ## 1 Emma      11       2 finalist
-    ## 2 Harry     10       3 winner  
-    ## 3 Ruby      11       2 finalist
-    ## 4 Zainab    10       0 finalist
+    ##   baker    age outcome  spices
+    ##   <chr>  <int> <chr>     <int>
+    ## 1 Emma      11 finalist      2
+    ## 2 Harry     10 winner        3
+    ## 3 Ruby      11 finalist      2
+    ## 4 Zainab    10 finalist      0
