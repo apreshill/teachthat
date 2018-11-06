@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Using the %&gt;% operator</title>
+    <meta charset="utf-8">
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Using the <code>%&gt;%</code> operator
+## Teaching with the tidyverse
+
+---
+
+
+
+
+
+class: middle, center, inverse
+
+![](rladylego-pipe.jpg)
+
+## What is the `%&gt;%`?
+
+*image courtesy [@LegoRLady](https://twitter.com/LEGO_RLady/status/986661916855754752)*
+
+
+---
+class: center, middle, inverse
+
+# `%&gt;%`
+
+## Combine multiple operations with the pipe
+
+https://r4ds.had.co.nz/transform.html#combining-multiple-operations-with-the-pipe
+
+---
+class: center, middle, inverse
+
+# `%&gt;%`
+
+## The pipe
+
+*"dataframe first, dataframe once"*
+
+--
+
+
+```r
+library(tidyverse)
+```
+
+
+--
+
+RStudio Keyboard Shortcuts:
+
+OSX: `CMD` + `SHIFT` + `M`
+
+Else: `CTRL` + `SHIFT` + `M`
+
+---
+class: middle
+
+.pull-left[
+.shout[Nesting] a dataframe inside a function is .shout[hard to read].
+
+
+```r
+slice(babynames, 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 F     Mary   7065 0.0724
+```
+
+&lt;hr&gt;
+
+
+
+Here, the "sentence" starts with a .shout[verb].
+
+]
+
+--
+
+.pull-right[
+
+.whisper[Piping] a dataframe into a function lets you read .whisper[L to R, top-to-bottom].
+
+
+```r
+babynames %&gt;% 
+  slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 F     Mary   7065 0.0724
+```
+
+&lt;hr&gt;
+
+
+Now, the "sentence" starts with a .whisper[noun].
+
+]
+
+
+
+---
+class: middle
+
+.pull-left[
+
+.shout[Sequences of functions] make you read .shout[inside out]
+
+
+```r
+slice(filter(babynames, 
+             sex == "M"), 
+      1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+]
+
+--
+
+.pull-right[
+
+.whisper[Chaining functions] together lets you read .whisper[L to R, top-to-bottom]
+
+
+```r
+babynames %&gt;% 
+  filter(sex == "M") %&gt;% 
+  slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+]
+
+---
+## Think .whisper["and then"]
+
+
+```r
+*babynames %&gt;% # dataframe first and then...
+  filter(sex == "M") %&gt;% 
+  slice(1)
+```
+
+---
+## Think .whisper["and then"]
+
+
+```r
+*babynames %&gt;% # dataframe first and then...
+* filter(sex == "M") %&gt;% # filter and then...
+  slice(1) 
+```
+
+---
+## Think .whisper["and then"]
+
+
+```r
+*babynames %&gt;% # dataframe first and then...
+* filter(sex == "M") %&gt;% # filter and then...
+* slice(1) # slice the first row!
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+---
+## Use assignment
+
+Using the `&lt;-` assigns this new object a name, like `males_row1`.
+
+
+```r
+*males_row1 &lt;-
+  babynames %&gt;% 
+  filter(sex == "M") %&gt;%
+  slice(1) 
+
+males_row1
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+
+---
+class: inverse, middle, center
+
+&lt;img src="https://www.rstudio.com/wp-content/uploads/2014/04/magrittr.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+## "dataframe first, dataframe once" 
+
+---
+class: middle
+## What you don't see
+
+
+```r
+babynames %&gt;% 
+* filter(sex == "M") %&gt;%
+* slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+&lt;hr&gt;
+
+--
+
+.pull-left[
+
+This does the same thing: 
+
+
+```r
+babynames %&gt;% 
+* filter(.data = ., sex == "M") %&gt;%
+* slice(.data = ., 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+]
+
+--
+
+.pull-right[
+
+So does this:
+
+
+```r
+babynames %&gt;% 
+* filter(., sex == "M") %&gt;%
+* slice(., 1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+]
+
+---
+class: inverse, middle, center
+
+![](https://media.giphy.com/media/xUA7bfXlUyyE6FbOfu/giphy.gif)
+
+## Why do I need to know about the dot (`.`)?
+
+---
+## Answer
+
+For many non-`tidyverse` functions (and some `tidyverse` ones too), the dataframe is not _actually_ the first argument 😢.
+
+--
+
+
+.pull-left[
+.shout[Bad]
+
+```r
+# neither of these will work
+t.test(babynames, prop ~ sex)
+```
+
+```r
+babynames %&gt;% 
+  t.test(prop ~ sex)
+```
+]
+
+--
+
+.pull-right[
+.onfire[Good]
+
+```r
+# both of these will work
+t.test(prop ~ sex, data = babynames)
+```
+
+```r
+babynames %&gt;% 
+  t.test(prop ~ sex, data = .)
+```
+
+```
+
+	Welch Two Sample t-test
+
+data:  prop by sex
+t = -28.871, df = 1157500, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -5.843749e-05 -5.100754e-05
+sample estimates:
+mean in group F mean in group M 
+   0.0001168327    0.0001715552 
+```
+]
+
+---
+class:middle, inverse, center
+
+![](https://media.giphy.com/media/TBddd797slSxO/giphy.gif)
+
+## Using the `%&gt;%` in tidyverse style
+
+---
+
+From [The tidyverse style guide](https://style.tidyverse.org/pipes.html), the `%&gt;%` should:
+
+- Always have a space before it.
+
+--
+
+- Usually be followed by a new line. 
+
+--
+
+- Be indented by two spaces after the first step where you name the dataframe. 
+
+--
+
+- Includes the `()` for each function (even if you don't use arguments!)
+
+--
+
+.pull-left[
+.shout[Bad]
+
+```r
+babynames %&gt;% 
+filter(sex == "M") %&gt;% slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+```r
+# with assignment
+males_row1 &lt;- babynames %&gt;% 
+  filter(sex == "M") %&gt;% 
+  slice(1)
+```
+]
+
+--
+
+.pull-left[
+.onfire[Good]
+
+```r
+babynames %&gt;% 
+  filter(sex == "M") %&gt;% 
+  slice(1)
+```
+
+```
+# A tibble: 1 x 5
+   year sex   name      n   prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;
+1  1880 M     John   9655 0.0815
+```
+
+```r
+# with assignment
+males_row1 &lt;- 
+  babynames %&gt;% 
+  filter(sex == "M") %&gt;% 
+  slice(1)
+```
+]
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

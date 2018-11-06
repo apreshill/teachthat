@@ -1,0 +1,325 @@
+---
+title: "Using the `%>%` operator"
+subtitle: "Teaching with the tidyverse"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/my-theme.css", "css/my-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(knitr.table.format = "html") 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300,
+  fig.align = "center", out.width = "65%", cache = FALSE,
+  error = FALSE)
+library(tidyverse)
+library(babynames)
+library(emo)
+```
+
+
+class: middle, center, inverse
+
+![](rladylego-pipe.jpg)
+
+## What is the `%>%`?
+
+*image courtesy [@LegoRLady](https://twitter.com/LEGO_RLady/status/986661916855754752)*
+
+
+---
+class: center, middle, inverse
+
+# `%>%`
+
+## Combine multiple operations with the pipe
+
+https://r4ds.had.co.nz/transform.html#combining-multiple-operations-with-the-pipe
+
+---
+class: center, middle, inverse
+
+# `%>%`
+
+## The pipe
+
+*"dataframe first, dataframe once"*
+
+--
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+
+--
+
+RStudio Keyboard Shortcuts:
+
+OSX: `CMD` + `SHIFT` + `M`
+
+Else: `CTRL` + `SHIFT` + `M`
+
+---
+class: middle
+
+.pull-left[
+.shout[Nesting] a dataframe inside a function is .shout[hard to read].
+
+```{r}
+slice(babynames, 1)
+```
+
+<hr>
+
+
+
+Here, the "sentence" starts with a .shout[verb].
+
+]
+
+--
+
+.pull-right[
+
+.whisper[Piping] a dataframe into a function lets you read .whisper[L to R, top-to-bottom].
+
+```{r}
+babynames %>% 
+  slice(1)
+```
+
+<hr>
+
+
+Now, the "sentence" starts with a .whisper[noun].
+
+]
+
+
+
+---
+class: middle
+
+.pull-left[
+
+.shout[Sequences of functions] make you read .shout[inside out]
+
+```{r}
+slice(filter(babynames, 
+             sex == "M"), 
+      1)
+```
+
+]
+
+--
+
+.pull-right[
+
+.whisper[Chaining functions] together lets you read .whisper[L to R, top-to-bottom]
+
+```{r}
+babynames %>% 
+  filter(sex == "M") %>% 
+  slice(1)
+```
+
+]
+
+---
+## Think .whisper["and then"]
+
+```{r results='hide'}
+babynames %>% # dataframe first and then... #<<
+  filter(sex == "M") %>% 
+  slice(1)
+```
+
+---
+## Think .whisper["and then"]
+
+```{r results='hide'}
+babynames %>% # dataframe first and then... #<<
+  filter(sex == "M") %>% # filter and then...#<<
+  slice(1) 
+```
+
+---
+## Think .whisper["and then"]
+
+```{r}
+babynames %>% # dataframe first and then... #<<
+  filter(sex == "M") %>% # filter and then...#<<
+  slice(1) # slice the first row! #<<
+```
+
+---
+## Use assignment
+
+Using the `<-` assigns this new object a name, like `males_row1`.
+
+```{r}
+males_row1 <- #<<
+  babynames %>% 
+  filter(sex == "M") %>%
+  slice(1) 
+
+males_row1
+```
+
+
+---
+class: inverse, middle, center
+
+```{r out.width = '50%', echo = FALSE}
+knitr::include_graphics("https://www.rstudio.com/wp-content/uploads/2014/04/magrittr.png")
+```
+
+## "dataframe first, dataframe once" 
+
+---
+class: middle
+## What you don't see
+
+```{r}
+babynames %>% 
+  filter(sex == "M") %>% #<<
+  slice(1) #<<
+```
+
+<hr>
+
+--
+
+.pull-left[
+
+This does the same thing: 
+
+```{r}
+babynames %>% 
+  filter(.data = ., sex == "M") %>%  #<<
+  slice(.data = ., 1) #<<
+```
+
+]
+
+--
+
+.pull-right[
+
+So does this:
+
+```{r}
+babynames %>% 
+  filter(., sex == "M") %>%  #<<
+  slice(., 1) #<<
+```
+
+]
+
+---
+class: inverse, middle, center
+
+![](https://media.giphy.com/media/xUA7bfXlUyyE6FbOfu/giphy.gif)
+
+## Why do I need to know about the dot (`.`)?
+
+---
+## Answer
+
+For many non-`tidyverse` functions (and some `tidyverse` ones too), the dataframe is not _actually_ the first argument `r emo::ji("sad")`.
+
+--
+
+
+.pull-left[
+.shout[Bad]
+```{r eval = FALSE}
+# neither of these will work
+t.test(babynames, prop ~ sex)
+```
+```{r eval = FALSE}
+babynames %>% 
+  t.test(prop ~ sex)
+```
+]
+
+--
+
+.pull-right[
+.onfire[Good]
+```{r eval = FALSE}
+# both of these will work
+t.test(prop ~ sex, data = babynames)
+```
+```{r}
+babynames %>% 
+  t.test(prop ~ sex, data = .)
+```
+]
+
+---
+class:middle, inverse, center
+
+![](https://media.giphy.com/media/TBddd797slSxO/giphy.gif)
+
+## Using the `%>%` in tidyverse style
+
+---
+
+From [The tidyverse style guide](https://style.tidyverse.org/pipes.html), the `%>%` should:
+
+- Always have a space before it.
+
+--
+
+- Usually be followed by a new line. 
+
+--
+
+- Be indented by two spaces after the first step where you name the dataframe. 
+
+--
+
+- Includes the `()` for each function (even if you don't use arguments!)
+
+--
+
+.pull-left[
+.shout[Bad]
+```{r}
+babynames %>% 
+filter(sex == "M") %>% slice(1)
+
+# with assignment
+males_row1 <- babynames %>% 
+  filter(sex == "M") %>% 
+  slice(1)
+```
+]
+
+--
+
+.pull-left[
+.onfire[Good]
+```{r}
+babynames %>% 
+  filter(sex == "M") %>% 
+  slice(1)
+
+# with assignment
+males_row1 <- 
+  babynames %>% 
+  filter(sex == "M") %>% 
+  slice(1)
+```
+]
+
+
