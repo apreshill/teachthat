@@ -126,8 +126,7 @@ class: middle
 
 ```r
 slice(filter(babynames, 
-             sex == "M"), 
-      1)
+             sex == "M"), 1)
 ```
 
 ```
@@ -196,7 +195,7 @@ You can build up a series of pipes
 ```r
 *babynames %&gt;% # dataframe first and then...
 * filter(sex == "M") %&gt;% # filter only males and then...
-* arrange(desc(year)) %&gt;% # arrange by year and then...
+* arrange(desc(year)) %&gt;%  # arrange by year and then...
   slice(1) 
 ```
 
@@ -210,7 +209,7 @@ You can build up a series of pipes
 ```r
 *babynames %&gt;% # dataframe first and then...
 * filter(sex == "M") %&gt;% # filter only males and then...
-* arrange(desc(year)) %&gt;% # arrange by year and then...
+* arrange(desc(year)) %&gt;%  # arrange by year and then...
 * slice(1) # slice the first row!
 ```
 
@@ -358,7 +357,7 @@ class: inverse, middle, center
 ---
 ## Why care about `.`?
 
-For many non-`tidyverse` functions (and some `tidyverse` ones too), the dataframe is not _actually_ the first argument 😭.
+For many non-`tidyverse` functions (and some `tidyverse` ones too), the dataframe is not _actually_ the first argument 😿.
 
 --
 
@@ -430,10 +429,10 @@ babynames %&gt;%
 filter(sex == "M") %&gt;% slice(1)
 
 # with assignment
-(boy_latest &lt;- babynames %&gt;% 
+boy_latest &lt;- babynames %&gt;% 
   filter(sex == "M") %&gt;% 
   arrange(desc(year)) %&gt;% 
-  slice(1))
+  slice(1)
 ```
 ]
 
@@ -449,11 +448,11 @@ babynames %&gt;%
   slice(1)
 
 # with assignment
-(boy_latest &lt;- 
+boy_latest &lt;- 
   babynames %&gt;% 
   filter(sex == "M") %&gt;% 
   arrange(desc(year)) %&gt;% 
-  slice(1))
+  slice(1)
 ```
 ]
     </textarea>

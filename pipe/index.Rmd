@@ -112,8 +112,7 @@ class: middle
 
 ```{r}
 slice(filter(babynames, 
-             sex == "M"), 
-      1)
+             sex == "M"), 1)
 ```
 
 ]
@@ -164,7 +163,7 @@ You can build up a series of pipes
 ```{r results='hide'}
 babynames %>% # dataframe first and then... #<<
   filter(sex == "M") %>% # filter only males and then...#<<
-  arrange(desc(year)) %>% # arrange by year and then...#<<
+  arrange(desc(year)) %>%  # arrange by year and then...#<<
   slice(1) 
 ```
 
@@ -177,7 +176,7 @@ You can build up a series of pipes
 ```{r}
 babynames %>% # dataframe first and then... #<<
   filter(sex == "M") %>% # filter only males and then...#<<
-  arrange(desc(year)) %>% # arrange by year and then...#<<
+  arrange(desc(year)) %>%  # arrange by year and then...#<<
   slice(1) # slice the first row! #<<
 ```
 
@@ -349,10 +348,10 @@ babynames %>%
 filter(sex == "M") %>% slice(1)
 
 # with assignment
-(boy_latest <- babynames %>% 
+boy_latest <- babynames %>% 
   filter(sex == "M") %>% 
   arrange(desc(year)) %>% 
-  slice(1))
+  slice(1)
 ```
 ]
 
@@ -367,11 +366,11 @@ babynames %>%
   slice(1)
 
 # with assignment
-(boy_latest <- 
+boy_latest <- 
   babynames %>% 
   filter(sex == "M") %>% 
   arrange(desc(year)) %>% 
-  slice(1))
+  slice(1)
 ```
 ]
 
