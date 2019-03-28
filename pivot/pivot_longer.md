@@ -20,7 +20,7 @@ juniors_untidy <- tribble(
   "Harry", 1L,   1L, 1L,
   "Ruby", 1L,   0L, 1L,
   "Zainab", 0L, NA, 0L
-)
+  )
 juniors_untidy
 ```
 
@@ -38,7 +38,8 @@ way one: select three columns
 juniors_untidy %>% 
   pivot_longer(cinnamon_1:nutmeg_3,
                names_to = "spice", 
-               values_to = "correct")
+               values_to = "correct"
+               )
 ```
 
     ## # A tibble: 12 x 3
@@ -63,7 +64,8 @@ way two: “freeze” baker
 juniors_untidy %>% 
   pivot_longer(-baker,
                names_to = "spice", 
-               values_to = "correct")
+               values_to = "correct"
+               )
 ```
 
     ## # A tibble: 12 x 3
@@ -88,7 +90,9 @@ way two, this time saving as a new data object
 (juniors_tidy <- juniors_untidy %>% 
     pivot_longer(-baker,
                  names_to = "spice", 
-                 values_to = "correct"))
+                 values_to = "correct"
+                 )
+  )
 ```
 
     ## # A tibble: 12 x 3
@@ -115,8 +119,8 @@ juniors_untidy %>%
   pivot_longer(-baker,
                names_to = c("spice", "order"), 
                names_sep = "_",
-               values_to = "correct",
-)
+               values_to = "correct"
+               )
 ```
 
     ## # A tibble: 12 x 4
