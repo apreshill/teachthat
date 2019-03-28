@@ -18,6 +18,9 @@ juniors_about
 (juniors_jumbled <- juniors_about %>% 
   gather(key = "var_name", value = "var_value", -baker))
 
+juniors_jumbled %>% 
+  knitr::kable()
+
 # spread to tidy- but all character variables!
 juniors_jumbled %>% 
   spread(var_name, var_value)
@@ -25,4 +28,3 @@ juniors_jumbled %>%
 # spread to tidy + cast column types too- huzzah!
 juniors_jumbled %>% 
   spread(var_name, var_value, convert = TRUE)
-

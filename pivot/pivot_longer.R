@@ -18,7 +18,9 @@ juniors_untidy <- tribble(
   "Ruby", 1L,   0L, 1L,
   "Zainab", 0L, NA, 0L
   )
-juniors_untidy
+
+juniors_untidy %>% 
+  knitr::kable()
 
 #' way one: select three columns
 juniors_untidy %>% 
@@ -48,4 +50,5 @@ juniors_untidy %>%
                names_to = c("spice", "order"), 
                names_sep = "_",
                values_to = "correct"
-               )
+               ) %>% 
+  knitr::kable()

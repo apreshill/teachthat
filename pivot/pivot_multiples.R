@@ -19,6 +19,9 @@ juniors_multiple <- tribble(
   "Zainab", 0L, NA, 0L, "cardamom", NA_character_, "cinnamon"
 )
 
+juniors_multiple %>% 
+  knitr::kable()
+
 #' I want three total columns:
 #' 
 #' + first is order (1/2/3) --> these are the numbers at end of my column names

@@ -21,7 +21,17 @@ juniors_multiple <- tribble(
   "Ruby", 1L,   0L, 1L, "cinnamon",   "cumin", "nutmeg",
   "Zainab", 0L, NA, 0L, "cardamom", NA_character_, "cinnamon"
 )
+
+juniors_multiple %>% 
+  knitr::kable()
 ```
+
+| baker  | score\_1 | score\_2 | score\_3 | guess\_1 | guess\_2 | guess\_3 |
+| :----- | -------: | -------: | -------: | :------- | :------- | :------- |
+| Emma   |        1 |        0 |        1 | cinnamon | cloves   | nutmeg   |
+| Harry  |        1 |        1 |        1 | cinnamon | cardamom | nutmeg   |
+| Ruby   |        1 |        0 |        1 | cinnamon | cumin    | nutmeg   |
+| Zainab |        0 |       NA |        0 | cardamom | NA       | cinnamon |
 
 I want three total columns:
 
@@ -85,7 +95,7 @@ juniors_multiple %>%
     ## 11 Zainab 2        NA <NA>    
     ## 12 Zainab 3         0 cinnamon
 
-make order a number
+make order a number instead
 
 ``` r
 juniors_multiple %>% 

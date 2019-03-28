@@ -21,16 +21,17 @@ juniors_untidy <- tribble(
   "Ruby", 1L,   0L, 1L,
   "Zainab", 0L, NA, 0L
   )
-juniors_untidy
+
+juniors_untidy %>% 
+  knitr::kable()
 ```
 
-    ## # A tibble: 4 x 4
-    ##   baker  cinnamon_1 cardamom_2 nutmeg_3
-    ##   <chr>       <int>      <int>    <int>
-    ## 1 Emma            1          0        1
-    ## 2 Harry           1          1        1
-    ## 3 Ruby            1          0        1
-    ## 4 Zainab          0         NA        0
+| baker  | cinnamon\_1 | cardamom\_2 | nutmeg\_3 |
+| :----- | ----------: | ----------: | --------: |
+| Emma   |           1 |           0 |         1 |
+| Harry  |           1 |           1 |         1 |
+| Ruby   |           1 |           0 |         1 |
+| Zainab |           0 |          NA |         0 |
 
 way one: select three columns
 
@@ -120,21 +121,21 @@ juniors_untidy %>%
                names_to = c("spice", "order"), 
                names_sep = "_",
                values_to = "correct"
-               )
+               ) %>% 
+  knitr::kable()
 ```
 
-    ## # A tibble: 12 x 4
-    ##    baker  spice    order correct
-    ##    <chr>  <chr>    <chr>   <int>
-    ##  1 Emma   cinnamon 1           1
-    ##  2 Emma   cardamom 2           0
-    ##  3 Emma   nutmeg   3           1
-    ##  4 Harry  cinnamon 1           1
-    ##  5 Harry  cardamom 2           1
-    ##  6 Harry  nutmeg   3           1
-    ##  7 Ruby   cinnamon 1           1
-    ##  8 Ruby   cardamom 2           0
-    ##  9 Ruby   nutmeg   3           1
-    ## 10 Zainab cinnamon 1           0
-    ## 11 Zainab cardamom 2          NA
-    ## 12 Zainab nutmeg   3           0
+| baker  | spice    | order | correct |
+| :----- | :------- | :---- | ------: |
+| Emma   | cinnamon | 1     |       1 |
+| Emma   | cardamom | 2     |       0 |
+| Emma   | nutmeg   | 3     |       1 |
+| Harry  | cinnamon | 1     |       1 |
+| Harry  | cardamom | 2     |       1 |
+| Harry  | nutmeg   | 3     |       1 |
+| Ruby   | cinnamon | 1     |       1 |
+| Ruby   | cardamom | 2     |       0 |
+| Ruby   | nutmeg   | 3     |       1 |
+| Zainab | cinnamon | 1     |       0 |
+| Zainab | cardamom | 2     |      NA |
+| Zainab | nutmeg   | 3     |       0 |
