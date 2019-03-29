@@ -1,7 +1,7 @@
 pivot\_wider.R
 ================
 alison
-2019-03-28
+2019-03-29
 
 Use the development version of tidyr from GitHub:
 
@@ -75,6 +75,31 @@ juniors_jumbled %>%
     ## # A tibble: 4 x 4
     ##   baker    age outcome  spices
     ##   <chr>  <int> <chr>     <int>
+    ## 1 Emma      11 finalist      2
+    ## 2 Harry     10 winner        3
+    ## 3 Ruby      11 finalist      2
+    ## 4 Zainab    10 finalist      0
+
+could do readr::type\_convert on full tibble too
+
+``` r
+juniors_jumbled %>% 
+  pivot_wider(names_from = var_name,
+              values_from = var_value) %>% 
+  readr::type_convert()
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   baker = col_character(),
+    ##   age = col_double(),
+    ##   outcome = col_character(),
+    ##   spices = col_double()
+    ## )
+
+    ## # A tibble: 4 x 4
+    ##   baker    age outcome  spices
+    ##   <chr>  <dbl> <chr>     <dbl>
     ## 1 Emma      11 finalist      2
     ## 2 Harry     10 winner        3
     ## 3 Ruby      11 finalist      2

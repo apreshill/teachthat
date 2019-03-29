@@ -39,3 +39,9 @@ juniors_jumbled %>%
   pivot_wider(names_from = var_name,
               values_from = var_value) %>% 
   mutate_at(vars(age, spices), as.integer)
+
+#' could do readr::type_convert on full tibble too
+juniors_jumbled %>% 
+  pivot_wider(names_from = var_name,
+              values_from = var_value) %>% 
+  readr::type_convert()
