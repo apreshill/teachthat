@@ -1,7 +1,7 @@
 pivot\_longer.R
 ================
 alison
-2019-03-28
+2019-03-29
 
 Use the development version of tidyr from GitHub:
 
@@ -92,25 +92,25 @@ way two, this time saving as a new data object
     pivot_longer(-baker,
                  names_to = "spice", 
                  values_to = "correct"
-                 )
+                 ) %>% 
+    knitr::kable()
   )
 ```
 
-    ## # A tibble: 12 x 3
-    ##    baker  spice      correct
-    ##    <chr>  <chr>        <int>
-    ##  1 Emma   cinnamon_1       1
-    ##  2 Emma   cardamom_2       0
-    ##  3 Emma   nutmeg_3         1
-    ##  4 Harry  cinnamon_1       1
-    ##  5 Harry  cardamom_2       1
-    ##  6 Harry  nutmeg_3         1
-    ##  7 Ruby   cinnamon_1       1
-    ##  8 Ruby   cardamom_2       0
-    ##  9 Ruby   nutmeg_3         1
-    ## 10 Zainab cinnamon_1       0
-    ## 11 Zainab cardamom_2      NA
-    ## 12 Zainab nutmeg_3         0
+| baker  | spice       | correct |
+| :----- | :---------- | ------: |
+| Emma   | cinnamon\_1 |       1 |
+| Emma   | cardamom\_2 |       0 |
+| Emma   | nutmeg\_3   |       1 |
+| Harry  | cinnamon\_1 |       1 |
+| Harry  | cardamom\_2 |       1 |
+| Harry  | nutmeg\_3   |       1 |
+| Ruby   | cinnamon\_1 |       1 |
+| Ruby   | cardamom\_2 |       0 |
+| Ruby   | nutmeg\_3   |       1 |
+| Zainab | cinnamon\_1 |       0 |
+| Zainab | cardamom\_2 |      NA |
+| Zainab | nutmeg\_3   |       0 |
 
 split the current column names into two columns using names\_to +
 names\_sep

@@ -41,7 +41,8 @@ juniors_untidy %>%
     pivot_longer(-baker,
                  names_to = "spice", 
                  values_to = "correct"
-                 )
+                 ) %>% 
+    knitr::kable()
   )
 
 #' split the current column names into two columns using names_to + names_sep
