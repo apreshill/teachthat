@@ -1,13 +1,13 @@
 pivot\_multiples.R
 ================
 alison
-2019-03-28
+2019-03-29
 
 Use the development version of tidyr from GitHub:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("tidyverse/tidyr")
+#install.packages("devtools")
+#devtools::install_github("tidyverse/tidyr")
 ```
 
 ``` r
@@ -44,7 +44,7 @@ I want three total columns:
 
 ``` r
 juniors_multiple %>% 
-  pivot_longer(-baker,
+  tidyr::pivot_longer(-baker,
                names_to = c(".value", "order"),
                names_sep = "_"
                )

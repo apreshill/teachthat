@@ -4,8 +4,8 @@
 
 #' Use the development version of tidyr from GitHub:
 #+ devversion, eval = FALSE
-install.packages("devtools")
-devtools::install_github("tidyverse/tidyr")
+#install.packages("devtools")
+#devtools::install_github("tidyverse/tidyr")
 
 #+ packages, warning = FALSE, message = FALSE
 library(dplyr)
@@ -28,7 +28,7 @@ juniors_multiple %>%
 #' + second is score (0/1/NA)
 #' + third is guess (cinnamon/cloves/nutmeg/NA)
 juniors_multiple %>% 
-  pivot_longer(-baker,
+  tidyr::pivot_longer(-baker,
                names_to = c(".value", "order"),
                names_sep = "_"
                )
